@@ -1,0 +1,38 @@
+1.	Setup the 2 pages with the appropriate titles
+2.	Developer --> Insert --> Command Button (in sheet1)
+3.	Right click --> Rename to ‘Transfer’
+4.	Double click on Command Button (goes to VBA window)
+5.	Add the VBA code:
+
+Private Sub CommandButton1_Click()
+    Dim Expense As String
+    Dim Amount As Double
+    Dim ExpenseDate As Date
+    
+    ' Use ThisWorkbook to refer to the workbook containing this code
+    Dim ws1 As Worksheet
+    Dim ws2 As Worksheet
+    
+    ' Set references to the worksheets by index
+    ' Index 1 represents the first worksheet, Index 2 represents the second worksheet, and so on.
+    Set ws1 = ThisWorkbook.Worksheets(1)
+    Set ws2 = ThisWorkbook.Worksheets(2)
+    
+    ' Get data from Sheet1
+    Expense = ws1.Range("A2").Value
+    Amount = ws1.Range("B2").Value
+    ExpenseDate = ws1.Range("C2").Value
+    
+    ' Find the next empty row in Sheet2's column A
+    Dim lastRow As Long
+    lastRow = ws2.Cells(ws2.Rows.Count, "A").End(xlUp).Row + 1
+    
+    ' Transfer data to Sheet2 without an empty line
+    ws2.Cells(lastRow, 1).Value = Expense
+    ws2.Cells(lastRow, 2).Value = Amount
+    ws2.Cells(lastRow, 3).Value = ExpenseDate
+    
+    ' Clear data in Sheet1
+    ws1.Range("A2:C2").ClearContents
+
+End Sub
